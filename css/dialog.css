@@ -1,0 +1,11 @@
+[plugin-panel="true"] div.message {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0 0 1.8em;
+}
+
+[plugin-panel="true"] label[for="iprompt"] {
+    margin-right: 1em;
+}
