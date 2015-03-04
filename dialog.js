@@ -74,6 +74,7 @@ module.exports = function (window) {
             model.callback = function(buttonNode) {
                 var containerNode = DOCUMENT.createElement('div'),
                     contentNode = instance.panel.getElement('>div[is="content"]'),
+                    messagePromise = model.messagePromise,
                     node;
                 // move all childNodes from contentNode inside the new DIV
                 // we need to start with position 2 --> the first 2 nodes are the scroller-nodes
@@ -84,8 +85,8 @@ module.exports = function (window) {
                 }
                 // now append a copy of the buttonNode:
                 containerNode.append(buttonNode.getOuterHTML());
-                model.messagePromise.fulfill(containerNode);
-                // we can sefely remove the newly created container-node: the vdom holds it for 1 minute
+                messagePromise.fulfill(containerNode);
+                // we can safely remove the newly created container-node: the vdom holds it for 1 minute
                 containerNode.remove();
             };
             instance.panel = DOCUMENT.createPanel(model);
