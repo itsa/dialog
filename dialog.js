@@ -164,6 +164,8 @@ module.exports = function (window) {
     // instantiate Dialog and make it operational:
     dialog = new Dialog();
 
+    window._ITSAmodules.Dialog = Dialog;
+
     // return the Class, so it can be subclassed:
     return Dialog;
 };
