@@ -1,4 +1,31 @@
-[plugin-panel="true"] div.message {
+[plugin-panel="true"] div.dialog-message-icon,
+[plugin-panel="true"] div.dialog-message {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    vertical-align: top;
+    display: inline-block;
+}
+
+[plugin-panel="true"] div.dialog-message-icon {
+    margin-left: -3em;
+    padding-left: 3em;
+    width: 3em;
+}
+
+[plugin-panel="true"] div.dialog-message {
+    margin-left: 4.25em;
+    padding-top: 0.6em;
+}
+
+[plugin-panel="true"] div.dialog-message-icon i[icon] svg {
+    width: 3em;
+    height: 3em;
+}
+
+[plugin-panel="true"] div.dialog-prompt {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;

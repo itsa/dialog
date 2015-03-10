@@ -35,8 +35,7 @@
         "js-ext": "itsa/js-ext",
         "event": "itsa/event",
         "utils": "itsa/utils",
-        "panel": "itsa/panel",
-        "messages": "itsa/messages"
+        "panel": "itsa/panel"
     },
     "devDependencies": {
         "chai": "^1.9.1",

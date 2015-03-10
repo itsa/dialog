@@ -13,7 +13,6 @@
 */
 
 require('js-ext');
-require('messages');
 require('polyfill');
 require('./css/dialog.css');
 
@@ -74,15 +73,8 @@ module.exports = function (window) {
             model.callback = function(buttonNode) {
                 var containerNode = DOCUMENT.createElement('div'),
                     contentNode = instance.panel.getElement('>div[is="content"]'),
-                    messagePromise = model.messagePromise,
-                    node;
-                // move all childNodes from contentNode inside the new DIV
-                // we need to start with position 2 --> the first 2 nodes are the scroller-nodes
-/*jshint boss:true */
-                while (node=contentNode.childNodes[2]) {
-/*jshint boss:false */
-                    containerNode.appendChild(node);
-                }
+                    messagePromise = model.messagePromise;
+                containerNode = contentNode.cloneNode(true);
                 // now append a copy of the buttonNode:
                 containerNode.append(buttonNode.getOuterHTML());
                 messagePromise.fulfill(containerNode);
@@ -137,6 +129,7 @@ module.exports = function (window) {
                 model.header = null;
                 model.content = '';
                 model.footer = null;
+                model.validate = null;
                 model.visible = false;
                 return;
             }
@@ -157,6 +150,7 @@ module.exports = function (window) {
             model.header = messagePromise.header;
             model.content = messagePromise.content;
             model.footer = messagePromise.footer;
+            model.validate = messagePromise.validate;
             model.visible = true;
         }
     });
@@ -164,6 +158,7 @@ module.exports = function (window) {
     // instantiate Dialog and make it operational:
     dialog = new Dialog();
 
-    // return the Class, so it can be subclassed:
+    window._ITSAmodules.Dialog = Dialog;
+
     return Dialog;
 };
