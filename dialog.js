@@ -40,10 +40,9 @@ module.exports = function (window) {
     var DOCUMENT = window.document,
         Classes = require('js-ext/extra/classes.js'),
         UTILS = require('utils'),
-        messages = require('messages'),
         later = UTILS.later,
         async = UTILS.async,
-        dialog, Dialog, Event, exportObject;
+        dialog, Dialog, Event;
 
     window._ITSAmodules || Object.protectedProp(window, '_ITSAmodules', createHashMap());
 
@@ -159,39 +158,7 @@ module.exports = function (window) {
     // instantiate Dialog and make it operational:
     dialog = new Dialog();
 
-    exportObject = {
-        Dialog: Dialog,
-        getNumber: function(message, defaultValue, min, max, floated, options) {
-            options || (options = {});
-            options.defaultValue = defaultValue;
-            options.validate = function(e) {
-                var buttonNode = e.button,
-                    panelNode = buttonNode.inside('[plugin-panel="true"]'),
-                    inputNode = panelNode.getElement('input'),
-                    value = inputNode.getValue(),
-                    validatesNumber = value.validateNumber(),
-                    numberWithinRange = true,
-                    number, validates;
-                if (validatesNumber && (min || max)) {
-                    number = parseInt(value, 10);
-                    if (typeof min==='number') {
-                        numberWithinRange = (number>=min);
-                    }
-                    if ((typeof max==='number') && numberWithinRange) {
-                        numberWithinRange = (number<=max);
-                    }
-                }
-                validates = validatesNumber && numberWithinRange;
-                if (!validates) {
-                    inputNode.focus();
-                }
-                return validates;
-            };
-            return messages.prompt(message, options);
-        }
-    };
+    window._ITSAmodules.Dialog = Dialog;
 
-    window._ITSAmodules.Dialog = exportObject;
-
-    return exportObject;
+    return Dialog;
 };

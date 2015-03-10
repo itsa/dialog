@@ -10,19 +10,19 @@
 }
 
 [plugin-panel="true"] div.dialog-message-icon {
-    margin-left: -4em;
-    padding-left: 4em;
-    width: 4em;
+    margin-left: -3em;
+    padding-left: 3em;
+    width: 3em;
 }
 
 [plugin-panel="true"] div.dialog-message {
-    margin-left: 5em;
-    padding-top: 1em;
+    margin-left: 4.25em;
+    padding-top: 0.6em;
 }
 
 [plugin-panel="true"] div.dialog-message-icon i[icon] svg {
-    width: 4em;
-    height: 4em;
+    width: 3em;
+    height: 3em;
 }
 
 [plugin-panel="true"] div.dialog-prompt {
