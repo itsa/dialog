@@ -19,12 +19,12 @@ require('./css/dialog.css');
 var NAME = '[dialog]: ',
     MESSAGE_LEVELS = {
         'message': 1,
-        'warning': 2,
+        'warn': 2,
         'error': 3
     },
     MESSAGE_HASHES = {
         'message': 'messages',
-        'warning': 'warnings',
+        'warn': 'warnings',
         'error': 'errors'
     },
     MESSAGE_HASHES_NR = {
@@ -101,7 +101,7 @@ module.exports = function (window) {
         },
         setupListeners: function() {
             var instance = this;
-            Event.after(['*:message', '*:warning', '*:error'], instance.processMessage.bind(instance));
+            Event.after(['*:message', '*:warn', '*:error'], instance.processMessage.bind(instance));
         },
         isWaiting: function() {
             return (this.currentMessageLevel===0);
