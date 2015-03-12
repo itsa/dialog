@@ -1,14 +1,15 @@
 "use strict";
 /**
- * Creating floating Panel-nodes which can be shown and hidden.
+ * Defines a dialog-panel to display messages.
+ * Every message that fulfills will get the dialog-content as well as the pressed button as return.
  *
  *
  * <i>Copyright (c) 2014 ITSA - https://github.com/itsa</i>
  * New BSD License - http://choosealicense.com/licenses/bsd-3-clause/
  *
  *
- * @module panel
- * @class Panel
+ * @module dialog
+ * @class Dialog
  * @since 0.0.1
 */
 
@@ -55,18 +56,74 @@ module.exports = function (window) {
     require('panel')(window);
     Event = require('event');
 
+    /**
+     * Model that is passed through to the Panel.
+     *
+     * @property model
+     * @default {
+            draggable: true
+       }
+     * @type Object
+     * @since 0.0.1
+     */
+
+    /**
+     * Internal property that tells what message-level is currently active.
+     *
+     * @property _currentMessageLevel
+     * @default 0
+     * @type Number
+     * @private
+     * @since 0.0.1
+     */
+
+    /**
+     * Internal hash all queued message with level=1 (*:message)
+     *
+     * @property messages
+     * @default []
+     * @type Array
+     * @since 0.0.1
+     */
+
+    /**
+     * Internal hash all queued message with level=2 (*:warn)
+     *
+     * @property warnings
+     * @default []
+     * @type Array
+     * @since 0.0.1
+     */
+
+    /**
+     * Internal hash all queued message with level=3 (*:error)
+     *
+     * @property errors
+     * @default []
+     * @type Array
+     * @since 0.0.1
+     */
     Dialog = Classes.createClass(function() {
         var instance = this;
         instance.model = {
             draggable: true
         };
-        instance.currentMessageLevel = 0;
+        instance._currentMessageLevel = 0;
         instance.messages = [];
         instance.warnings = [];
         instance.errors = [];
         instance.createContainer();
         instance.setupListeners();
     }, {
+
+       /**
+         * Creates a Panel-instance that will be used to display the messages.
+         * Sets instance.model as panel's model and defines model.callback
+         * which fulfills the message when a button on the dialog is pressed,
+         *
+         * @method createContainer
+         * @since 0.0.1
+         */
         createContainer: function() {
             var instance = this,
                 model = instance.model;
@@ -83,7 +140,15 @@ module.exports = function (window) {
             };
             instance.panel = DOCUMENT.createPanel(model);
         },
-        processMessage: function(e) {
+
+       /**
+         * Processes messages that are emitted by `messages`-module and add them in the queue.
+         *
+         * @method queueMessage
+         * @param e {Object} the eventobject
+         * @since 0.0.1
+         */
+        queueMessage: function(e) {
             var instance = this,
                 messagePromise = e.messagePromise,
                 type = e.type,
@@ -97,15 +162,39 @@ module.exports = function (window) {
                     instance.handleMessage(true);
                 }
             );
-            (level>instance.currentMessageLevel) && instance.handleMessage(!instance.isWaiting(), level);
+            (level>instance._currentMessageLevel) && instance.handleMessage(!instance.isWaiting(), level);
         },
+
+       /**
+         * Defines subscribers to the events: *:message, *:warn and *:error.
+         *
+         * @method setupListeners
+         * @since 0.0.1
+         */
         setupListeners: function() {
             var instance = this;
-            Event.after(['*:message', '*:warn', '*:error'], instance.processMessage.bind(instance));
+            Event.after(['*:message', '*:warn', '*:error'], instance.queueMessage.bind(instance));
         },
+
+       /**
+         * Tells whether `dialog` is waitin g for new messages and is currently iddle.
+         *
+         * @method isWaiting
+         * @return {Boolean} whether `dialog` is waitin g for new messages
+         * @since 0.0.1
+         */
         isWaiting: function() {
-            return (this.currentMessageLevel===0);
+            return (this._currentMessageLevel===0);
         },
+
+       /**
+         * Retrieves the next message from the queue and calls showMessage() if it finds one.
+         *
+         * @method handleMessage
+         * @param [delay] {Boolean} if there should be a delay between the previous dialog and the new one
+         * @param [level] {Number} to force handling a specific level
+         * @since 0.0.1
+         */
         handleMessage: function(delay, level) {
             var instance = this,
                 model = instance.model,
@@ -125,7 +214,7 @@ module.exports = function (window) {
             if (!level || (instance[MESSAGE_HASHES_NR[level]].length===0)) {
                 // DO NOT make messagePromise null: it sould be there as return value
                 // of the last message
-                instance.currentMessageLevel = 0;
+                instance._currentMessageLevel = 0;
                 model.header = null;
                 model.content = '';
                 model.footer = null;
@@ -133,7 +222,7 @@ module.exports = function (window) {
                 model.visible = false;
                 return;
             }
-            instance.currentMessageLevel = level;
+            instance._currentMessageLevel = level;
             // now process the highest message
             messagePromise = instance[MESSAGE_HASHES_NR[level]][0];
             if (delay) {
@@ -144,6 +233,14 @@ module.exports = function (window) {
                 async(instance.showMessage.bind(instance, messagePromise));
             }
         },
+
+       /**
+         * Shows the specified message-promise.
+         *
+         * @method showMessage
+         * @param messagePromise {Promise} the message to be shown.
+         * @since 0.0.1
+         */
         showMessage: function(messagePromise) {
             var model = this.model;
             model.messagePromise = messagePromise;
