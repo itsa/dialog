@@ -243,6 +243,7 @@ module.exports = function (window) {
          */
         showMessage: function(messagePromise) {
             var model = this.model;
+            window.scrollTo(0, 0);
             model.messagePromise = messagePromise;
             model.header = messagePromise.header;
             model.content = messagePromise.content;
