@@ -33,7 +33,7 @@ var NAME = '[dialog]: ',
         2: 'warnings',
         3: 'errors'
     },
-    FOLLOWUP_DELAY = 200,
+    FOLLOWUP_DELAY = 150,
     createHashMap = require('js-ext/extra/hashmap.js').createMap;
 
 module.exports = function (window) {
