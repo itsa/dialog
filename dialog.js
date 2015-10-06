@@ -54,7 +54,7 @@ module.exports = function (window) {
     }
 
     require('panel')(window);
-    Event = require('event');
+    Event = require('itsa-event');
 
     /**
      * Model that is passed through to the Panel.

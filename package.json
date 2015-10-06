@@ -33,7 +33,7 @@
     "dependencies": {
         "polyfill": "itsa/polyfill",
         "js-ext": "itsa/js-ext",
-        "event": "itsa/itsa-event",
+        "itsa-event": "itsa/itsa-event",
         "utils": "itsa/utils",
         "panel": "itsa/panel"
     },
